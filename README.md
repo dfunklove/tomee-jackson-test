@@ -6,6 +6,7 @@ This is a test demonstrating a problem with Jackson and JAXB under Apache TomEE 
 The Service class implements a JAX-RS resource with path /test.
 
 The following method works as expected:
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public UserBean read() {
@@ -14,10 +15,13 @@ The following method works as expected:
         userBean.setLastName("last");
         return userBean;
     }
+
 Producing the following output:
-{"firstName":"first","lastName":"last"}
+
+    {"firstName":"first","lastName":"last"}
 
 However, this method never executes:
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public String create(UserBean userBean) {
@@ -26,18 +30,19 @@ However, this method never executes:
     }
 
 The following JS code in createUser.html is used to pass JSON to the Service class.
-		user = {};
-		user.firstName = document.getElementById('firstName').value;
-		user.lastName = document.getElementById('lastName').value;
-				
-		// Submit the form in the background
-		var oReq = new XMLHttpRequest();
-		oReq.onload = reqListener;
-		
-		url = "http://localhost:8080/tomee-jackson-test/test";
-		oReq.open("post", url, true);
-		oReq.setRequestHeader("Content-type", "application/json");
-		oReq.send(JSON.stringify(user));
+
+    user = {};
+    user.firstName = document.getElementById('firstName').value;
+    user.lastName = document.getElementById('lastName').value;
+            
+    // Submit the form in the background
+    var oReq = new XMLHttpRequest();
+    oReq.onload = reqListener;
+
+    url = "http://localhost:8080/tomee-jackson-test/test";
+    oReq.open("post", url, true);
+    oReq.setRequestHeader("Content-type", "application/json");
+    oReq.send(JSON.stringify(user));
 		
 The JS execution completes, but the println in the Service class does not execute, nor are any exceptions thrown.
 
