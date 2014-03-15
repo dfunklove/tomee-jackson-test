@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>createUser</title>
+</head>
+<body>
+<p>Below are the results of your query:</p>
+	
+<form method="POST" id="theForm" onsubmit="submitTheForm()" action="CreateUser">
+	First Name <input name="firstName" id="firstName"/><br/>
+	Last Name <input name="lastName" id="lastName"/><br/>
+	
+	<br/>Output <br/><textarea rows="10" cols="50" id="out_area" title="Status"></textarea>
+	<input type="hidden" name="payload" id="payload"></input>
+</form>
+
+<button id="theButton" onclick="submitTheForm()">Submit</button>
+
+<script>
+	function reqListener () {
+		theResponse = this.responseText;
+		console.log("BEFORE");
+		console.log(theResponse);
+		console.log("AFTER");
+		document.getElementById('out_area').value = theResponse;
+	}
+	
+	function submitTheForm() {
+		console.log("SUBMIT");
+		user = {};
+		user.firstName = document.getElementById('firstName').value;
+		user.lastName = document.getElementById('lastName').value;
+				
+		// Submit the form in the background
+		var oReq = new XMLHttpRequest();
+		oReq.onload = reqListener;
+		
+		url = "http://localhost:8080/tomee-jackson-test/test";
+		oReq.open("post", url, true);
+		oReq.setRequestHeader("Content-type", "application/json");
+		oReq.send(JSON.stringify(user));
+		
+		console.log("SENT");
+		
+		return false;
+	}
+</script>
+
+</body>
+</html>
